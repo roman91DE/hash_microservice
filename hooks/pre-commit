@@ -1,0 +1,19 @@
+#!/bin/sh
+
+# Run go fmt on the codebase
+fmt_output=$(go fmt ./...)
+if [ -n "$fmt_output" ]; then
+  echo "The following files need to be formatted:"
+  echo "$fmt_output"
+  exit 1
+fi
+
+# Run the test suite
+if ! test_output=$(go test ./...); then
+  echo "Tests failed:"
+  echo "$test_output"
+  exit 1
+fi
+
+# If both checks pass, allow the commit
+exit 0
